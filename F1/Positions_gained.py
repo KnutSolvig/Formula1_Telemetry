@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 
 fastf1.plotting.setup_mpl(mpl_timedelta_support=False, color_scheme='fastf1')
 
-# Get session info and load data - update the year, round and session type as needed
-session = fastf1.get_session(2026, 2, 'R') 
+# Get session info and load data - update the year and round as needed
+session = fastf1.get_session(2026, 2, 'R') # Needs to be R = RACE
 session.load(telemetry=False, weather = False)
 
 # Defines size of the plot

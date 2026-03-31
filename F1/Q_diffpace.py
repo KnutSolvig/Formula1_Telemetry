@@ -9,8 +9,8 @@ from fastf1.core import Laps
 # Enable Matlotlib's support for timedelta objects and set the color scheme to 'None' for a more neutral palette
 fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme='None')
 
-# Get session info and load data - update the year, round and session type as needed
-session = fastf1.get_session(2020, 6, 'Q')
+# Get session info and load data - update the year and round as needed
+session = fastf1.get_session(2020, 6, 'Q') # Needs to be Q = QUALIFYING!
 session.load()
 
 drivers = pd.unique(session.laps['Driver'])
