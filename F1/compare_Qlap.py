@@ -5,10 +5,10 @@ import fastf1.plotting
 fastf1.plotting.setup_mpl(mpl_timedelta_support=True, color_scheme='fastf1')
 
 # Change year and round as needed
-year = 2026
-round = 3 # Use number or name 'Spanish Grand Prix'
+year = 2025
+round = 1 # Use number or name 'Spanish Grand Prix'
 driver1 = 'ANT' # Driver no. 1 to compare, use abbreviated name
-driver2 = 'BOT' # Driver no. 2 to compare, use abbreviated name
+driver2 = 'NOR' # Driver no. 2 to compare, use abbreviated name
 
 session = fastf1.get_session(year, round, 'Q') # Needs to be Q = QUALIFYING
 session.load()
