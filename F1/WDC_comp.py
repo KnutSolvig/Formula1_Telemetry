@@ -1,11 +1,28 @@
 import fastf1
 from fastf1.ergast import Ergast
+import pandas as pd
 
 SEASON = 2026
-ROUND = 3
+
+
+def get_last_completed_round():
+    events = fastf1.get_event_schedule(SEASON, backend='ergast')
+    now_utc = pd.Timestamp.utcnow().tz_localize(None)
+
+    raced_events = events[events['Session5DateUtc'] <= now_utc]
+    if raced_events.empty:
+        return 0
+
+    return int(raced_events['RoundNumber'].max())
+
+
+ROUND = get_last_completed_round()
 
 # Get current driver standings
 def get_driver_standings():
+    if ROUND == 0:
+        return None
+
     ergast = Ergast()
     standings = ergast.get_driver_standings(season=SEASON, round=ROUND)
     return standings.content[0]
@@ -18,8 +35,8 @@ def calculate_max_points():
     events = fastf1.get_event_schedule(SEASON, backend = 'ergast')
     events = events[events['RoundNumber'] > ROUND]
 
-    sprint_events = len(events.loc[events["EventFormat"] == "sprint_shootout"])
-    normal_events = len(events.loc[events["EventFormat"] == "conventional"]) # Conventional is "normal" aka. no sprint
+    sprint_events = len(events.loc[events["EventFormat"].str.contains("sprint", na=False)])
+    normal_events = len(events) - sprint_events
 
     sprint_points = sprint_events * POINTS_SPRINT
     normal_points = normal_events * POINTS_NORMAL
@@ -48,9 +65,13 @@ points = calculate_max_points()
 print("\n")
 print('-------------------------------')
 
+print(f"Last completed round: {ROUND}")
 print(f"Points left in the season: {points}")
 
 print('-------------------------------')
 print("\n")
 
-calculate_who_can_win(driver_standings, points)
+if driver_standings is None:
+    print("No race has been completed yet this season.")
+else:
+    calculate_who_can_win(driver_standings, points)
