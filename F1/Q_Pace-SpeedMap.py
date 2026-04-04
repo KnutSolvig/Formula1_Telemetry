@@ -34,6 +34,7 @@ ax.axis('equal')
 ax.axis('off')
 
 # GET FULL DRIVER NAME
+driver_full_name = session.get_driver(driver)['FullName']
 
 norm = plt.Normalize(speed.min(), speed.max())
 lc = LineCollection(segments, cmap='plasma', norm=norm)
@@ -44,7 +45,7 @@ ax.add_collection(lc)
 colorlegend = plt.colorbar(lc, ax=ax, pad=0.02)
 colorlegend.set_label('Speed (km/h)')
 
-plt.suptitle(f"{session.event['EventName']} {session.event.year} Qualifying \n Heatmap of {driver}'s fastest lap")
+plt.suptitle(f"{session.event['EventName']} {session.event.year} Qualifying \n Heatmap of {driver_full_name}'s fastest lap")
 
 ax.autoscale()
 ax.margins(0.05)
